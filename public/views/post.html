@@ -1,0 +1,106 @@
+<div class="tr-breadcrumb bg-image section-before">
+	<div class="container">
+		<div class="breadcrumb-info text-center">
+			<div class="page-title">
+				<h1>Post/Edit Your Wiki</h1>
+			</div>
+			<ol class="breadcrumb">
+				<li><a href="#!/">Home</a></li>
+				<li class="active">Wiki Post/Edit</li>
+			</ol>
+		</div>
+	</div>
+</div>
+
+<form> 
+  <div class="tr-post-job page-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+      
+          <div class="section">
+            <span class="tr-title">Wiki Info</span>
+            <div class="row">
+              <div class="col-sm-3">
+                <label>Title</label>
+              </div>
+              <div class="col-sm-9">
+                <input type="text" class="form-control"/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <label>Category</label>
+              </div>
+              <div class="col-sm-9">
+                <select class="form-control">
+                  <option value="" selected>Select a category</option>
+                  <option value="Technology" selected>Technology</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <label>Author</label>
+              </div>
+              <div class="col-sm-9">
+                <input type="text" class="form-control"/>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <label>URL Name</label>
+              </div>
+              <div class="col-sm-9">
+                <input type="text" class="form-control"/>
+              </div>
+            </div>
+
+            <div class="row" ng-show="urlName">
+              <div class="col-sm-3">
+                <label>Final URL</label>
+              </div>
+              <div class="col-sm-9">
+                NA
+              </div>
+            </div>
+          </div>        
+
+          <div class="section">
+            <span class="tr-title">Wiki Content</span>
+            <div id="editor"></div>
+          </div>
+
+          <div class="section agreement">  
+            <div class="form-group mb-5">
+              <strong>Management Password </strong>
+              <input type="password" class="form-control mb-2"/>
+              <small class="form-text text-muted">A password is needed so you can edit this wiki in the future. If this is a new Wiki, enter a new password, if you are editing an existing Wiki, enter the password you set before.</small>
+            </div>
+
+            <div class="mb-5">
+              <input type="checkbox"/>
+              You agree to our <a href="#" target="_blank">Terms of Use</a> and <a href="#" target="_blank">Privacy Policy</a> and acknowledge that you
+              are the rightful owner of this content.
+            </div>
+
+            <div class="buttons">
+              <button type="button" class="btn btn-primary">Save Wiki</button>
+              <a href="#!/" class="btn button-cancle">Cancel</a>
+              <button type="button" class="btn btn-danger pull-right">Delete Wiki</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <span class="tr-title">Live Site</span>
+            <h3><a>NA</a></h3>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
