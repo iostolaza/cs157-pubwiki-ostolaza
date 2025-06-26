@@ -7,6 +7,8 @@
     </div>
   </div>
 </div>
+<div ng-if="error" class="alert alert-danger">{{ error }}</div>
+<div ng-if="success" class="alert alert-success">{{ success }}</div>
 
 <div class="tr-account section-padding">
   <div class="container text-center">
@@ -14,19 +16,19 @@
         <div class="account-content">
           <form class="tr-form">
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Full Name">
+              <input type="text" class="form-control" placeholder="Full Name" ng-model="user.fullName">
             </div>
             <div class="form-group">
-              <input type="text" class="form-control" placeholder="Username">
+             <input type="text" class="form-control" placeholder="Username" ng-model="user.username">
             </div>
             <div class="form-group">
-              <input type="email" class="form-control" placeholder="your Email">
+              <input type="email" class="form-control" placeholder="your Email" ng-model="user.email">
             </div>
             <div class="form-group">
-              <input type="password" class="form-control" placeholder="Password">
+              <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
             </div>
             <div class="form-group">
-              <input type="password" class="form-control" placeholder="Confirm Password">
+             <input type="password" class="form-control" placeholder="Confirm Password" ng-model="user.confirmPassword">
             </div>
             <button type="button" class="btn btn-primary">Sign Up</button>
           </form>

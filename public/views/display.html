@@ -19,6 +19,11 @@
     </div>
   </div>
 </div>
+<div ng-if="error" class="alert alert-danger">{{ error }}</div>
+<div ng-if="success" class="alert alert-success">{{ success }}</div>
+<form ng-submit="register()">
+  <!-- your fields... -->
+</form>
 
 <div class="page-content">
   <div class="container-fluid">

@@ -1,196 +1,127 @@
-wikiApp.controller("postController", function ($scope, $http, $routeParams) {
-  // Controller for post view
 
+// public/js/controllers/postController.js
+
+wikiApp.controller("postController", function ($scope, $http, $routeParams, $location) {
+  // Initialize status messages
+  $scope.error = null;
+  $scope.success = null;
+
+  // Load categories for the dropdown
   $http.get("/api/categories")
     .then(function (response) {
-      // Assuming the server returns an array of categories
       $scope.categories = response.data;
     })
     .catch(function (error) {
-      // Handle error if needed
-      console.error("Error fetching categories:", error);
+      $scope.error = "Could not load categories.";
+      $scope.categories = [];
     });
 
-  // CKEditor
-  initCKEditor();
-
+  // CKEditor setup
   function initCKEditor() {
-    ClassicEditor.create(document.querySelector("#editor"), {
-      toolbar: {
-        items: [
-          "heading",
-          "fontSize",
-          "fontColor",
-          "fontBackgroundColor",
-          "highlight",
-          "removeFormat",
-          "|",
-          "bold",
-          "italic",
-          "underline",
-          "link",
-          "bulletedList",
-          "numberedList",
-          "todoList",
-          "|",
-          "outdent",
-          "indent",
-          "alignment",
-          "|",
-          "blockQuote",
-          "insertTable",
-          "imageInsert",
-          "mediaEmbed",
-          "undo",
-          "redo",
-          "|",
-          "code",
-          "codeBlock",
-          "htmlEmbed",
-          "MathType",
-          "ChemType",
-          "strikethrough",
-          "subscript",
-          "superscript",
-          "horizontalLine",
-        ],
-        shouldNotGroupWhenFull: true,
-      },
-      mediaEmbed: {
-        previewsInData: true,
-      },
-      language: "en",
-      image: {
-        toolbar: ["imageTextAlternative", "imageStyle:full", "imageStyle:side"],
-      },
-      table: {
-        contentToolbar: [
-          "tableColumn",
-          "tableRow",
-          "mergeTableCells",
-          "tableCellProperties",
-          "tableProperties",
-        ],
-      },
-      licenseKey: "",
-    })
-      .then((editor) => {
+    ClassicEditor.create(document.querySelector("#editor"), { })
+      .then(editor => {
         window.editor = editor;
         editorReady();
       })
-      .catch((error) => {
-        console.error("Oops, something went wrong!");
-        console.error(
-          "Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:",
-        );
-        console.warn("Build id: bojh7pnw6nnm-dfpekd22znn5");
+      .catch(error => {
+        $scope.error = "CKEditor failed to load.";
         console.error(error);
       });
   }
-  // This function is called when the editor is ready (Your GET logic should go here)
-  function editorReady() {
-    window.editor.setData("NA");
+  initCKEditor();
 
-    // If $routeParams.urlName is defined then the client is requesting to edit an existing wiki
+  // Load an existing wiki if editing, otherwise prepare empty
+  function editorReady() {
+    window.editor.setData(""); 
     if ($routeParams.urlName) {
-      // Make Ajax request
-      // load the data in the $scope ex. $scope.title = response.data.title...
-      // load the HTML for CKEditor using window.editor.setData(response.data.html)
-      $http
-        .get(`/api/wiki/${$routeParams.urlName}`)
+      $http.get(`/api/wiki/${$routeParams.urlName}`)
         .then(function (response) {
-          // Load the data in the $scope
           $scope.title = response.data.title;
-          // Load the HTML for CKEditor using window.editor.setData
+          $scope.category = response.data.category;
+          $scope.author = response.data.author;
+          $scope.urlName = response.data.urlName;
+    
           window.editor.setData(response.data.html);
         })
         .catch(function (error) {
-          // Handle errors if needed
-          console.error("Error fetching wiki data:", error);
+          $scope.error = "Could not load wiki for editing.";
         });
     }
   }
 
-  // This function returns the HTML contents of the editor (Call this during your POST/PATCH operations)
+  // Helper to get HTML content from editor
   function getHtml() {
     return window.editor.getData();
   }
 
-  // For your save logic, you will have two concerns
-  // 1. Saving an existing wiki (use $routeParams.urlName to check) and do a PATCH
-  //    request passing in the data items. call getHtml() to get the HTML of CKEditor
-  // 2. Saving a new wiki, do a POST request
-
+  // Save (Create or Update) Wiki
   $scope.saveWiki = function () {
+    $scope.error = null;
+    $scope.success = null;
+    if (!$scope.title || !$scope.category || !$scope.author || !$scope.urlName || !getHtml()) {
+      $scope.error = "All fields are required!";
+      return;
+    }
+    if (!$scope.managementPassword) {
+      $scope.error = "Password is required for saving!";
+      return;
+    }
+    if (!$scope.agreeToTerms) {
+      $scope.error = "You must agree to terms to continue.";
+      return;
+    }
+
     const wikiData = {
-      // Include other data fields as needed
       title: $scope.title,
       category: $scope.category,
       author: $scope.author,
       urlName: $scope.urlName,
       html: getHtml(),
-      // managementPassword: $scope.managementPassword,
+      managementPassword: $scope.managementPassword,
       agreeToTerms: $scope.agreeToTerms,
-      // password: req.body.password
+      password: $scope.managementPassword 
     };
 
+    // Edit mode: PATCH, otherwise POST
     if ($routeParams.urlName) {
-      // Existing wiki, do a PATCH request
-      $http
-        .patch(`/api/wiki/${$routeParams.urlName}`, wikiData)
+      $http.patch(`/api/wiki/${$routeParams.urlName}`, wikiData)
         .then(function (response) {
-          // Handle successful update
-          console.log("Wiki updated successfully:", response.data);
+          $scope.success = "Wiki updated!";
         })
         .catch(function (error) {
-          // Handle errors if needed
-          console.error("Error updating wiki:", error);
+          $scope.error = (error.data && error.data.error) ? error.data.error : "Error updating wiki.";
         });
     } else {
-      // New wiki, do a POST request
-      $http
-        .post("/api/wiki", wikiData)
+      $http.post("/api/wiki", wikiData)
         .then(function (response) {
-          // Handle successful creation
-          console.log("New wiki created successfully:", response.data);
+          $scope.success = "Wiki created!";
         })
         .catch(function (error) {
-          // Handle errors if needed
-          console.error("Error creating new wiki:", error);
+          $scope.error = (error.data && error.data.error) ? error.data.error : "Error creating wiki.";
         });
     }
   };
 
-
-
+  // Cancel edit - redirect home
   $scope.cancelEdit = function () {
-    console.log("Edit canceled");
+    $location.path("/");
   };
 
-
+  // Delete wiki
   $scope.deleteWiki = function () {
-    if (confirm("Are you sure you want to delete this wiki?")) {
-      $http
-        .delete(`/api/wiki/delete/${$routeParams.urlName}`)
-        .then(function (response) {
-          console.log("Wiki deleted successfully:", response.data);
-        })
-        .catch(function (error) {
-
-          console.error("Error deleting wiki:", error);
-        });
-    }
-  };
-
-
-  $http.get("/categories")
+    var pw = prompt("Enter password to delete this wiki:");
+    if (!pw) return;
+    $http({
+      method: 'DELETE',
+      url: `/api/wiki/delete/${$routeParams.urlName}`,
+      data: { password: pw }
+    })
     .then(function (response) {
-
-      $scope.categories = response.data;
+      $scope.success = "Wiki deleted!";
+      setTimeout(() => $location.path("/"), 1200);
     })
     .catch(function (error) {
-
-      console.error("Error fetching categories:", error);
+      $scope.error = (error.data && error.data.error) ? error.data.error : "Delete failed.";
     });
-
+  };
 });
