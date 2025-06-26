@@ -40,23 +40,23 @@
               <ul class="tr-list">
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-calendar" aria-hidden="true"></i></div>
-                  <div class="media-body"><span>Published:</span>NA</div>
+                  <div class="media-body" ng-model="createdDate"><span>Published:</span>{{ createdDate }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-calendar" aria-hidden="true"></i></div>
-                  <div class="media-body"><span>Updated:</span>NA</div>
+                  <div class="media-body" ng-model="updatedDate"><span>Updated:</span>{{ updatedDate }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-user" aria-hidden="true"></i></div>
-                  <div class="media-body"><span>Author:</span>NA</div>
+                  <div class="media-body" ng-model="author"><span>Author:</span>{{ author }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-book" aria-hidden="true"></i></div>
-                  <div class="media-body"><span>Category:</span>NA</div>
+                  <div class="media-body" ng-model="category"><span>Category:</span>{{ category }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
-                  <div class="media-body"><span>Page Views:</span>NA</div>
+                  <div class="media-body" ng-model="pageViews"><span>Page Views:</span>{{ pageViews }}</div>
                 </li>
               </ul>
               <a class="btn btn-secondary mt-3">Edit Wiki</a>
@@ -67,3 +67,4 @@
     </div>
   </div>
 </div>
+

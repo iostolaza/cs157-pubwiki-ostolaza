@@ -25,7 +25,7 @@
                 <label>Title</label>
               </div>
               <div class="col-sm-9">
-                <input type="text" class="form-control"/>
+                <input type="text" class="form-control" ng-model="title" />
               </div>
             </div>
 
@@ -34,9 +34,9 @@
                 <label>Category</label>
               </div>
               <div class="col-sm-9">
-                <select class="form-control">
+                  <select class="form-control" ng-model="category">
                   <option value="" selected>Select a category</option>
-                  <option value="Technology" selected>Technology</option>
+                  <option ng-repeat="cat in categories" value="{{cat}}">{{cat}}</option>
                 </select>
               </div>
             </div>
@@ -46,7 +46,7 @@
                 <label>Author</label>
               </div>
               <div class="col-sm-9">
-                <input type="text" class="form-control"/>
+                <input type="text" class="form-control" ng-model="author" />
               </div>
             </div>
 
@@ -55,7 +55,7 @@
                 <label>URL Name</label>
               </div>
               <div class="col-sm-9">
-                <input type="text" class="form-control"/>
+                <input type="text" class="form-control"ng-model="urlName" />
               </div>
             </div>
 
@@ -64,7 +64,7 @@
                 <label>Final URL</label>
               </div>
               <div class="col-sm-9">
-                NA
+               {{ urlName }}
               </div>
             </div>
           </div>        
@@ -77,26 +77,26 @@
           <div class="section agreement">  
             <div class="form-group mb-5">
               <strong>Management Password </strong>
-              <input type="password" class="form-control mb-2"/>
+              <input type="password" class="form-control mb-2"ng-model="managementPassword" />
               <small class="form-text text-muted">A password is needed so you can edit this wiki in the future. If this is a new Wiki, enter a new password, if you are editing an existing Wiki, enter the password you set before.</small>
             </div>
 
             <div class="mb-5">
-              <input type="checkbox"/>
+              <input type="checkbox" ng-model="agreeToTerms"/>
               You agree to our <a href="#" target="_blank">Terms of Use</a> and <a href="#" target="_blank">Privacy Policy</a> and acknowledge that you
               are the rightful owner of this content.
             </div>
 
             <div class="buttons">
-              <button type="button" class="btn btn-primary">Save Wiki</button>
-              <a href="#!/" class="btn button-cancle">Cancel</a>
-              <button type="button" class="btn btn-danger pull-right">Delete Wiki</button>
+              <button type="button" class="btn btn-primary" ng-click="saveWiki()">Save Wiki</button>
+              <a href="#!/" class="btn button-cancel" ng-click="cancelEdit()">Cancel</a>
+              <button type="button" class="btn btn-danger pull-right" ng-click="deleteWiki()">Delete Wiki</button>
             </div>
           </div>
 
           <div class="section">
             <span class="tr-title">Live Site</span>
-            <h3><a>NA</a></h3>
+            <h3><a href="{{ urlName }}">{{ urlName }}</a></h3>
           </div>
 
         </div>

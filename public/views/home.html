@@ -6,8 +6,8 @@
         <h2>Share your ideas with the world!</h2>
         <div class="banner-form">
           <form>
-            <input type="text" class="form-control" placeholder="Wiki Keyword">
-            <button type="button" class="btn btn-primary">Search</button>
+            <input type="text" class="form-control" placeholder="Wiki Keyword" ng-model="searchTerm">
+            <button type="submit" class="btn btn-primary" ng-click="searchWiki()">Search</button>
           </form>
         </div>
       </div>
@@ -20,18 +20,21 @@
         <h1>Search Results</h1>
       </div>
       <div class="blog-content">
+        <!-- <div ng-if="!searchResults || searchResults.length === 0">
+          <p>No results found.</p>
+        </div> -->
 
         <!-- Sample HTML for a search result -->
-        <div class="tr-post media">
+        <div class="tr-post media" ng-repeat="result in searchResults">
           <div class="entry-content media-body">
-            <a href="#!/{{ wiki.urlName }}" class="btn btn-success pull-right">View</a>
-            <h2 class="entry-title"><a>Title</a></h2>
+            <a href="#!/{{ result.urlName }}" class="btn btn-success pull-right">View</a>
+            <h2 class="entry-title"><a>{{ result.title }}</a></h2>
             
             <ul class="entry-meta tr-list">
-              <li><i class="fa fa-user"></i>Author: NA</li>
-              <li><i class="fa fa-book"></i>Category: NA</li>
-              <li><i class="fa fa-clock-o"></i>Updated: NA</li>
-              <li><i class="fa fa-eye"></i> NA Views</li>
+              <li><i class="fa fa-user"></i>Author:{{ result.author }}</li>
+              <li><i class="fa fa-book"></i>Category:{{ result.category }}</li>
+              <li><i class="fa fa-clock-o"></i>Updated:{{ result.updatedDate | date }}</li>
+              <li><i class="fa fa-eye"></i>{{ result.pageViews }}  Views</li>
             </ul>
           </div>
         </div>
