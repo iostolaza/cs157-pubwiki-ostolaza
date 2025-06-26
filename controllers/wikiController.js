@@ -1,6 +1,7 @@
-// controllers/wikiController.js
-const { Wiki } = require('../config/database.js');
 
+// controllers/wikiController.js
+
+const { Wiki } = require('../config/database');
 
 // Controller to handle search
 exports.searchWiki = async (req, res) => {

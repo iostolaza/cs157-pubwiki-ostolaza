@@ -1,2 +1,12 @@
 node_modules/
 .env
+
+mongo username:
+iostolaza87
+
+mongo password:
+JI9ENern5ahECk5w
+
+
+mongo url:
+mongodb+srv://iostolaza87:JI9ENern5ahECk5w@cs157-pubwiki.eb200rg.mongodb.net/?retryWrites=true&w=majority&appName=cs157-pubwiki
