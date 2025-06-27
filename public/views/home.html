@@ -1,11 +1,13 @@
 
+<!-- public/views/home.html -->
+  
   <div class="tr-banner section-before bg-image">
     <div class="container">
       <div class="banner-content text-center">
         <h1>The Easiest Way to Create a Wiki</h1>
         <h2>Share your ideas with the world!</h2>
         <div class="banner-form">
-          <form>
+          <form ng-submit="search()">
             <input type="text" class="form-control" placeholder="Wiki Keyword" ng-model="searchTerm">
             <button type="submit" class="btn btn-primary" ng-click="searchWiki()">Search</button>
           </form>
@@ -22,11 +24,6 @@
         <h1>Search Results</h1>
       </div>
       <div class="blog-content">
-        <!-- <div ng-if="!searchResults || searchResults.length === 0">
-          <p>No results found.</p>
-        </div> -->
-
-        <!-- Sample HTML for a search result -->
         <div class="tr-post media" ng-repeat="result in searchResults">
           <div class="entry-content media-body">
             <a href="#!/{{ result.urlName }}" class="btn btn-success pull-right">View</a>
@@ -40,12 +37,9 @@
             </ul>
           </div>
         </div>
-        <!-- End Sample -->
-
       </div>
     </div>
   </div>
-
 
   <div class="tr-steps bg-image section-padding section-before">
     <div class="container">
@@ -67,7 +61,7 @@
             </div>
             <h1>Step 2</h1>
             <h2>create a free wiki</h2>
-            <p>Just will in some details and begin creating your free PubWiki!</p>
+            <p>Just fill in some details and begin creating your free PubWiki!</p>
           </div>
         </div>
         <div class="col-sm-4">

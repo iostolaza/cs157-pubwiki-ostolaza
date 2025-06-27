@@ -1,3 +1,6 @@
+
+<!-- public/views/signin.html -->
+
 <div class="tr-breadcrumb bg-image section-before">
   <div class="container">
     <div class="breadcrumb-info text-center">
@@ -14,17 +17,17 @@
   <div class="container text-center">
     <div class="user-account">
       <div class="account-content">
-        <form class="tr-form">
+        <form ng-submit="login()" class="tr-form">
           <div class="form-group">
-            <input type="email" class="form-control" placeholder="Enter Your Email">
+            <input type="email" class="form-control" placeholder="Enter Your Email" ng-model="user.email">
           </div>
           <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password">
+            <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
           </div>
-          <button type="button" class="btn btn-primary">Login</button>
+          <button type="submit" class="btn btn-primary">Login</button>
         </form>
         <div class="new-user text-center">
-          <span><a href="#!/register">Create a New Account</a> </span>
+          <span><a href="#!/register">Create a New Account</a></span>
         </div>
       </div>
     </div>

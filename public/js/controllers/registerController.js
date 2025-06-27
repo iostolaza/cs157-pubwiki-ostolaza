@@ -17,12 +17,7 @@ wikiApp.controller("registerController", function($scope, $http, $location) {
       $scope.error = "Passwords do not match.";
       return;
     }
-
-    $http.post("/api/register", {
-      username: $scope.user.username,
-      email: $scope.user.email,
-      password: $scope.user.password
-    })
+    $http.post("/api/user/register", $scope.user)
       .then(function (response) {
         $scope.success = "Registration successful! Redirecting to sign in...";
         setTimeout(function() {
@@ -34,4 +29,5 @@ wikiApp.controller("registerController", function($scope, $http, $location) {
       });
   };
 });
+
 

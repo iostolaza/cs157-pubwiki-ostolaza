@@ -12,7 +12,13 @@ app.use(express.json({limit: '5mb'}));
 
 connectToDatabase();
 
-app.use("/api/wiki", wikiRoutes);
+app.use('/api/wiki', require('./routes/wiki'));
+app.use('/api/user', require('./routes/user'));
+app.use('/api/categories', (req, res) => {
+  const categories = require('./config/categories');
+  res.json(categories);
+});
+
 
 // Serve the AngularJS app
 app.get('/', (req, res) => {

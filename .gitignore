@@ -1,6 +1,8 @@
 node_modules/
 .env
 
+/gpt-prompt-note.txt
+
 mongo username:
 iostolaza87
 

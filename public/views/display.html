@@ -1,3 +1,6 @@
+
+<!-- public/views/display.html -->
+
 <div class="tr-breadcrumb bg-image section-before">
   <div class="container">
     <div class="breadcrumb-info text-center">
@@ -11,9 +14,12 @@
       <div class="buttons">
         <a href="#" class="btn button-bookmark"><i class="fa fa-bookmark" aria-hidden="true"></i>Bookmark</a>
         <span class="btn button-share">
-          <i class="fa fa-share-alt" aria-hidden="true"></i>Share <span><a href="#">
-          <i class="fa fa-facebook" aria-hidden="true"></i></a><a href="#">
-          <i class="fa fa-twitter" aria-hidden="true"></i></a><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></span>
+          <i class="fa fa-share-alt" aria-hidden="true"></i>Share
+          <span>
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-google-plus"></i></a>
+          </span>
         </span>
       </div>
     </div>
@@ -21,22 +27,12 @@
 </div>
 <div ng-if="error" class="alert alert-danger">{{ error }}</div>
 <div ng-if="success" class="alert alert-success">{{ success }}</div>
-<form ng-submit="register()">
-  <!-- your fields... -->
-</form>
-
 <div class="page-content">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-8 col-lg-9">
-
-        <!-- ng-bind-html displays (renders) HTML in a secure way and does not allow XSS -->
-        <div class="section" ng-bind-html="html">
-          
-        </div>
-
+        <div class="section" ng-bind-html="html"></div>
       </div>
-
       <div class="col-md-4 col-lg-3">
         <div class="tr-sidebar">
           <div class="widget-area">
@@ -45,23 +41,23 @@
               <ul class="tr-list">
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-calendar" aria-hidden="true"></i></div>
-                  <div class="media-body" ng-model="createdDate"><span>Published:</span>{{ createdDate }}</div>
+                  <div class="media-body"><span>Published:</span> {{ createdDate }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-calendar" aria-hidden="true"></i></div>
-                  <div class="media-body" ng-model="updatedDate"><span>Updated:</span>{{ updatedDate }}</div>
+                  <div class="media-body"><span>Updated:</span> {{ updatedDate }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-user" aria-hidden="true"></i></div>
-                  <div class="media-body" ng-model="author"><span>Author:</span>{{ author }}</div>
+                  <div class="media-body"><span>Author:</span> {{ author }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-book" aria-hidden="true"></i></div>
-                  <div class="media-body" ng-model="category"><span>Category:</span>{{ category }}</div>
+                  <div class="media-body"><span>Category:</span> {{ category }}</div>
                 </li>
                 <li class="media">
                   <div class="pull-left"><i class="fa fa-line-chart" aria-hidden="true"></i></div>
-                  <div class="media-body" ng-model="pageViews"><span>Page Views:</span>{{ pageViews }}</div>
+                  <div class="media-body"><span>Page Views:</span> {{ pageViews }}</div>
                 </li>
               </ul>
               <a class="btn btn-secondary mt-3">Edit Wiki</a>
@@ -72,4 +68,3 @@
     </div>
   </div>
 </div>
-

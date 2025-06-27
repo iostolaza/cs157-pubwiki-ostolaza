@@ -2,10 +2,11 @@
 /// config/database.js
 
 const mongoose = require('mongoose');
+const categories = require('./categories'); 
 
 const searchSchema = new mongoose.Schema({
   title: { type: String, required: true, maxLength: 50 },
-  category: { type: String, required: true, enum: ["Science", "Technology", "Entertainment"] },
+  category: { type: String, required: true,   enum: categories },
   author: { type: String, required: true, maxLength: 20 },
   urlName: { type: String, required: true, maxLength: 50, unique: true, match: /^[a-zA-Z0-9-_]+$/, index: true },
   html: { type: String, required: true },

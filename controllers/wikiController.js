@@ -3,6 +3,13 @@
 
 const { Wiki } = require('../config/database');
 
+const categories = require('../config/categories');
+
+// Controller to return categories
+exports.getCategories = (req, res) => {
+  res.json(categories);
+};
+
 // Controller to handle search
 exports.searchWiki = async (req, res) => {
   try {

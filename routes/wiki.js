@@ -5,6 +5,8 @@ const express = require('express');
 const router = express.Router();
 const wikiController = require('../controllers/wikiController');
 
+// Get Categories
+router.get('/categories', wikiController.getCategories);
 // Search wiki
 router.get('/search/:searchTerm', wikiController.searchWiki);
 // Get by urlName

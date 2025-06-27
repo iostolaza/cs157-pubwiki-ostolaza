@@ -1,89 +1,41 @@
-const express = require("express");
-const User = require("../models/user.js");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
+// routes/user.js
+
+const express = require("express");
+const router = express.Router();
+const User = require("../models/user.js");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const authUser = require("../middleware/authUser.js");
 
-// USER SCHEMA AND ENDPOINTS
-// SCHEMA (Typical User)
+// REGISTRATION ENDPOINT 
+router.post("/register", async (req, res) => {
+  try {
+    let existing = await User.findOne({ email: req.body.email });
+    if (existing) return res.status(400).send("User already exists");
+    let newUser = new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: bcrypt.hashSync(req.body.password, 10)
+    });
+    await newUser.save();
+    res.status(201).send(newUser);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 
-const router = express.Router();
-
-// USER REGISTRATION ENDPOINT (/api/user/register)
-// { "email": "name@server.com", "password": "abc123", "firstName": "April", "lastName": "May" }
-
-router.post("/register", (req, res) => {
-  // Checkto see if the user's account exists or not
-
-  User.findOne({ email: req.body.email })
-    .then(result => {
-      if (result) {
-        res.status(400).send("User already exists");
-      }
-
-      // Create the new User object
-      let newUser = new User(req.body);
-
-      // Hash the user password (and salt it)
-      newUser.password = bcrypt.hashSync(newUser.password, 10);
-
-      // Save the user account
-      newUser.save()
-        .then(result => {
-          res.status(201).send(result);
-        })
-        .catch(err => {
-          res.status(400).send(err);
-        })
-    })
-    .catch(err => {
-      res.status(500).send(err);
-    })
-})
-
-// LOGIN ENDPOINT (/api/user/login)
-// { "email": "aprilmay@gmail.com", "password": "abc123" }
-
-router.post("/login", (req, res) => {
-  // Look for the user to see if they exist
-  User.findOne({ email: req.body.email })
-    .then(result => {
-      if (!result) {
-        res.status(400).send("Invalid email/password");
-      }
-
-      // Step 1 is compare the user's set password to the stored hash
-
-      bcrypt.compare(req.body.password, result.password, (err, bcresult) => {
-        if (bcresult) { // if bcresult is defied, the password was a match
-          // At this point the username/password are valid
-
-          // Step 2: Create and issue the JWT
-
-          let payLoad = {
-            _id: result._id,
-            role: result.role
-          }
-
-          // Create the token (sign it)
-
-          let token = jwt.sign(payLoad, "12345678");
-
-          // Send the token to the client
-          res.status(200).send({ jwt: token });
-        } else {
-          res.status(400).send("Invalid email/password");
-        }
-      })
-    })
-    .catch(err => {
-      res.status(500).send(err);
-    })
-})
+// LOGIN ENDPOINT 
+router.post("/login", async (req, res) => {
+  let user = await User.findOne({ email: req.body.email });
+  if (!user) return res.status(400).send("Invalid email/password");
+  let match = await bcrypt.compare(req.body.password, user.password);
+  if (!match) return res.status(400).send("Invalid email/password");
+  let token = jwt.sign({ _id: user._id, role: user.role }, "12345678");
+  res.status(200).send({ jwt: token });
+});
 
 // GET (Read All Users)
-
 router.get("/", (req, res) => {
   User.find().exec()
     .then(result => {

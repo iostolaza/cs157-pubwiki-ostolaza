@@ -112,10 +112,11 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
     var pw = prompt("Enter password to delete this wiki:");
     if (!pw) return;
     $http({
-      method: 'DELETE',
-      url: `/api/wiki/delete/${$routeParams.urlName}`,
-      data: { password: pw }
-    })
+        method: 'DELETE',
+        url: `/api/wiki/delete/${$routeParams.urlName}`,
+        data: { password: pw },
+        headers: { 'Content-Type': 'application/json' }
+      })
     .then(function (response) {
       $scope.success = "Wiki deleted!";
       setTimeout(() => $location.path("/"), 1200);

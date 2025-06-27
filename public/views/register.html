@@ -1,3 +1,6 @@
+
+<!-- public/views/register.html -->
+
 <div class="tr-breadcrumb bg-image section-before">
   <div class="container">
     <div class="breadcrumb-info text-center">
@@ -14,23 +17,23 @@
   <div class="container text-center">
     <div class="user-account">
         <div class="account-content">
-          <form class="tr-form">
+          <form ng-submit="register()" class="tr-form">
             <div class="form-group">
               <input type="text" class="form-control" placeholder="Full Name" ng-model="user.fullName">
             </div>
             <div class="form-group">
-             <input type="text" class="form-control" placeholder="Username" ng-model="user.username">
+              <input type="text" class="form-control" placeholder="Username" ng-model="user.username">
             </div>
             <div class="form-group">
-              <input type="email" class="form-control" placeholder="your Email" ng-model="user.email">
+             <input type="email" class="form-control" placeholder="your Email" ng-model="user.email">
             </div>
             <div class="form-group">
               <input type="password" class="form-control" placeholder="Password" ng-model="user.password">
             </div>
             <div class="form-group">
-             <input type="password" class="form-control" placeholder="Confirm Password" ng-model="user.confirmPassword">
+              <input type="password" class="form-control" placeholder="Confirm Password" ng-model="user.confirmPassword">
             </div>
-            <button type="button" class="btn btn-primary">Sign Up</button>
+            <button type="submit" class="btn btn-primary">Sign Up</button>
           </form>
           <div class="new-user text-center">
             <span>Already Registered? <a href="#!/signin">Sign in</a> </span>

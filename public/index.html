@@ -1,3 +1,6 @@
+
+<!-- public/index.html -->
+
 <!DOCTYPE html>
 <html lang="en" ng-app="wikiApp">
 
@@ -112,26 +115,27 @@
     // Routes
     wikiApp.config(function($routeProvider) {
       $routeProvider
-        .when("/", {
-          templateUrl: "/views/home.html",
-          controller: "homeController"
-        })
-        .when("/signin", {
-          templateUrl: "/views/signin.html",
-          controller: "signinController"
-        })
-        .when("/register", {
-          templateUrl: "/views/register.html",
-          controller: "registerController"
-        })
-        .when("/post/:urlName?", {
-          templateUrl: "/views/post.html",
-          controller: "postController"
-        })
-        .when("/:urlName", {
-          templateUrl: "/views/display.html",
-          controller: "displayController"
-        })
+          .when("/", {
+            templateUrl: "/views/home.html",
+            controller: "homeController"
+          })
+          .when("/signin", {
+            templateUrl: "/views/signin.html",
+            controller: "signinController"
+          })
+          .when("/register", {
+            templateUrl: "/views/register.html",
+            controller: "registerController"
+          })
+          .when("/post/:urlName?", {
+            templateUrl: "/views/post.html",
+            controller: "postController"
+          })
+          .when("/:urlName", {
+            templateUrl: "/views/display.html",
+            controller: "displayController"
+          });
+
     });
 
     // Main Controller
