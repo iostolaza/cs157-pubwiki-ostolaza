@@ -32,6 +32,7 @@
     <div class="row">
       <div class="col-md-8 col-lg-9">
         <div class="section" ng-bind-html="html"></div>
+          
       </div>
       <div class="col-md-4 col-lg-3">
         <div class="tr-sidebar">
@@ -60,7 +61,8 @@
                   <div class="media-body"><span>Page Views:</span> {{ pageViews }}</div>
                 </li>
               </ul>
-              <a class="btn btn-secondary mt-3">Edit Wiki</a>
+              <a href="#!/post/{{ urlName }}" class="btn btn-secondary mt-3">Edit Wiki</a>
+              <button ng-click="deleteWiki()" class="btn btn-danger mt-3">Delete Wiki</button>
             </div>
           </div>
         </div>

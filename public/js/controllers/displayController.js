@@ -29,3 +29,25 @@ wikiApp.controller("displayController", function($scope, $http, $routeParams, $s
       $scope.loading = false;
     });
 });
+
+
+  // Delete wiki
+  $scope.deleteWiki = function () {
+    var pw = prompt("Enter password to delete this wiki:");
+    if (!pw) return;
+    $http({
+      method: 'DELETE',
+      url: `/api/wiki/delete/${$routeParams.urlName}`,
+      data: { password: pw },
+      headers: { 'Content-Type': 'application/json' }
+    })
+    .then(function (response) {
+      $scope.success = "Wiki deleted! Redirecting to homepage...";
+      setTimeout(function() {
+        $scope.$apply(() => $location.path('/'));
+      }, 1500);
+    })
+    .catch(function (error) {
+      $scope.error = (error.data && error.data.error) ? error.data.error : "Delete failed.";
+    });
+  };

@@ -39,9 +39,12 @@
         </div>
         <div class="navbar-right">
           <ul class="sign-in tr-list">
-            <li><i class="fa fa-user"></i></li>
-            <li><a href="#!/signin">Sign In </a></li>
-            <li><a href="#!/register">Register</a></li>
+            <li ng-if="!isLoggedIn()"><a href="#!/signin">Sign In</a></li>
+            <li ng-if="!isLoggedIn()"><a href="#!/register">Register</a></li>
+            <li ng-if="isLoggedIn()">
+              <span>Welcome, {{ getCurrentUser().username }}</span>
+              <a href="" ng-click="logout()">Logout</a>
+            </li>
           </ul>
           <a href="#!/post" class="btn btn-primary">Post Wiki</a>
         </div>
@@ -139,8 +142,20 @@
     });
 
     // Main Controller
-    wikiApp.controller("mainController", function($scope) {
-    });
+    wikiApp.controller("mainController", function($scope, $location) {
+        $scope.getCurrentUser = function() {
+          return JSON.parse(localStorage.getItem("user") || "null");
+        };
+        $scope.isLoggedIn = function() {
+          return !!localStorage.getItem("jwt");
+        };
+        $scope.logout = function() {
+          localStorage.removeItem("jwt");
+          localStorage.removeItem("user");
+          $location.path('/signin');
+        };
+      });
+
     
   </script>
 
@@ -151,8 +166,6 @@
     <script src="/js/controllers/postController.js"></script>
      <script src="/js/controllers/registerController.js"></script>
       <script src="/js/controllers/signinController.js"></script>
-    
-
 </body>
 
 </html>
