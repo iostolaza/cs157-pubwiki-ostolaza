@@ -54,6 +54,12 @@ exports.getWikiByUrl = async (req, res) => {
 // Controller to handle creating a new wiki page
 exports.createWiki = async (req, res) => {
   try {
+    // Check that urlName does not already exist
+    const existing = await Wiki.findOne({ urlName: req.body.urlName }).exec();
+    if (existing) {
+      return res.status(409).json({ error: 'A wiki with this URL already exists.' });
+    }
+
     const newWiki = new Wiki(req.body);
     const result = await newWiki.save();
     res.json(result);

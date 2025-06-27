@@ -1,7 +1,7 @@
 
 // public/js/controllers/displayController.js
 
-wikiApp.controller("displayController", function($scope, $http, $routeParams, $sce) {
+wikiApp.controller("displayController", function($scope, $http, $routeParams, $sce, $location) {
   const urlName = $routeParams.urlName;
   $scope.title = '';
   $scope.html = '';
@@ -14,6 +14,7 @@ wikiApp.controller("displayController", function($scope, $http, $routeParams, $s
 
   $http.get(`/api/wiki/${urlName}`)
     .then(function (response) {
+      $scope.urlName = urlName;
       $scope.title = response.data.title;
       $scope.html = $sce.trustAsHtml(response.data.html);
       $scope.author = response.data.author;
@@ -28,16 +29,14 @@ wikiApp.controller("displayController", function($scope, $http, $routeParams, $s
     .finally(function () {
       $scope.loading = false;
     });
-});
-
 
   // Delete wiki
   $scope.deleteWiki = function () {
-    var pw = prompt("Enter password to delete this wiki:");
+    var pw = prompt(`Enter password to delete "${$scope.urlName}" wiki:`);
     if (!pw) return;
     $http({
       method: 'DELETE',
-      url: `/api/wiki/delete/${$routeParams.urlName}`,
+      url: `/api/wiki/delete/${$scope.urlName}`,
       data: { password: pw },
       headers: { 'Content-Type': 'application/json' }
     })
@@ -51,3 +50,4 @@ wikiApp.controller("displayController", function($scope, $http, $routeParams, $s
       $scope.error = (error.data && error.data.error) ? error.data.error : "Delete failed.";
     });
   };
+}); 
