@@ -1,33 +1,31 @@
+
+// public/js/controllers/displayController.js
+
 wikiApp.controller("displayController", function($scope, $http, $routeParams, $sce) {
-
-  // Controller for display view
-  // this will be the urlName for your page
-
-  // Notes:
-  // Make an GET ajax call to endpoint and pass in the urlName
-  // The result will contain the html that should get assigned to $scope.html
-  // $scope.title = response.data.title
-  // $scope.html = response.data.html
-  // ..
   const urlName = $routeParams.urlName;
-
-  // Initialize variables
   $scope.title = '';
   $scope.html = '';
-  $scope.hitCount = 0;
+  $scope.author = '';
+  $scope.category = '';
+  $scope.pageViews = 0;
+  $scope.createdDate = '';
+  $scope.updatedDate = '';
   $scope.loading = true;
 
   $http.get(`/api/wiki/${urlName}`)
     .then(function (response) {
       $scope.title = response.data.title;
       $scope.html = $sce.trustAsHtml(response.data.html);
-      $scope.hitCount = response.data.hitCount;
+      $scope.author = response.data.author;
+      $scope.category = response.data.category;
+      $scope.pageViews = response.data.pageViews;
+      $scope.createdDate = response.data.createdDate;
+      $scope.updatedDate = response.data.updatedDate;
     })
     .catch(function (error) {
-      console.error("Error fetching data:", error);
-
+      $scope.error = "Error fetching data.";
     })
     .finally(function () {
       $scope.loading = false;
     });
-  });
+});

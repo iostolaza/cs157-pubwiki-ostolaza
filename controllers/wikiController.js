@@ -2,7 +2,6 @@
 // controllers/wikiController.js
 
 const { Wiki } = require('../config/database');
-
 const categories = require('../config/categories');
 
 // Controller to return categories
@@ -34,7 +33,15 @@ exports.getWikiByUrl = async (req, res) => {
     if (wiki) {
       wiki.pageViews++;
       await wiki.save();
-      res.json({ title: wiki.title, content: wiki.html, pageViews: wiki.pageViews });
+      res.json({
+        title: wiki.title,
+        html: wiki.html,
+        author: wiki.author,
+        category: wiki.category,
+        pageViews: wiki.pageViews,
+        createdDate: wiki.createdDate,
+        updatedDate: wiki.updatedDate
+      });
     } else {
       res.status(404).send('Wiki Page Not Found');
     }
@@ -62,6 +69,7 @@ exports.updateWiki = async (req, res) => {
     const existingWiki = await Wiki.findOne({ urlName: req.params.urlName }).exec();
     if (existingWiki && existingWiki.password === req.body.password) {
       Object.assign(existingWiki, req.body); // Update fields
+      existingWiki.updatedDate = new Date();
       const result = await existingWiki.save();
       res.json(result);
     } else {
@@ -78,7 +86,7 @@ exports.deleteWiki = async (req, res) => {
   try {
     const existingWiki = await Wiki.findOne({ urlName: req.params.urlName }).exec();
     if (existingWiki && existingWiki.password === req.body.password) {
-      const result = await Wiki.findByIdAndDelete(existingWiki._id);
+      await Wiki.findByIdAndDelete(existingWiki._id);
       res.json({ message: 'Wiki deleted successfully' });
     } else {
       res.status(403).json({ error: 'Invalid password or wiki not found' });

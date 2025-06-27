@@ -2,11 +2,10 @@
 // public/js/controllers/postController.js
 
 wikiApp.controller("postController", function ($scope, $http, $routeParams, $location) {
-  // Initialize status messages
   $scope.error = null;
   $scope.success = null;
 
-  // Load categories for the dropdown
+  // Load categories
   $http.get("/api/categories")
     .then(function (response) {
       $scope.categories = response.data;
@@ -18,7 +17,7 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
 
   // CKEditor setup
   function initCKEditor() {
-    ClassicEditor.create(document.querySelector("#editor"), { })
+    ClassicEditor.create(document.querySelector("#editor"), {})
       .then(editor => {
         window.editor = editor;
         editorReady();
@@ -30,7 +29,7 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
   }
   initCKEditor();
 
-  // Load an existing wiki if editing, otherwise prepare empty
+  // Load existing wiki for editing (if applicable)
   function editorReady() {
     window.editor.setData(""); 
     if ($routeParams.urlName) {
@@ -39,8 +38,7 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
           $scope.title = response.data.title;
           $scope.category = response.data.category;
           $scope.author = response.data.author;
-          $scope.urlName = response.data.urlName;
-    
+          $scope.urlName = $routeParams.urlName;
           window.editor.setData(response.data.html);
         })
         .catch(function (error) {
@@ -58,6 +56,7 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
   $scope.saveWiki = function () {
     $scope.error = null;
     $scope.success = null;
+
     if (!$scope.title || !$scope.category || !$scope.author || !$scope.urlName || !getHtml()) {
       $scope.error = "All fields are required!";
       return;
@@ -77,16 +76,17 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
       author: $scope.author,
       urlName: $scope.urlName,
       html: getHtml(),
-      managementPassword: $scope.managementPassword,
-      agreeToTerms: $scope.agreeToTerms,
-      password: $scope.managementPassword 
+      password: $scope.managementPassword
     };
 
     // Edit mode: PATCH, otherwise POST
     if ($routeParams.urlName) {
       $http.patch(`/api/wiki/${$routeParams.urlName}`, wikiData)
         .then(function (response) {
-          $scope.success = "Wiki updated!";
+          $scope.success = "Wiki updated! Redirecting to homepage...";
+          setTimeout(function() {
+            $scope.$apply(() => $location.path('/'));
+          }, 1500);
         })
         .catch(function (error) {
           $scope.error = (error.data && error.data.error) ? error.data.error : "Error updating wiki.";
@@ -94,7 +94,10 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
     } else {
       $http.post("/api/wiki", wikiData)
         .then(function (response) {
-          $scope.success = "Wiki created!";
+          $scope.success = "Wiki created! Redirecting to homepage...";
+          setTimeout(function() {
+            $scope.$apply(() => $location.path('/'));
+          }, 1500);
         })
         .catch(function (error) {
           $scope.error = (error.data && error.data.error) ? error.data.error : "Error creating wiki.";
@@ -112,14 +115,16 @@ wikiApp.controller("postController", function ($scope, $http, $routeParams, $loc
     var pw = prompt("Enter password to delete this wiki:");
     if (!pw) return;
     $http({
-        method: 'DELETE',
-        url: `/api/wiki/delete/${$routeParams.urlName}`,
-        data: { password: pw },
-        headers: { 'Content-Type': 'application/json' }
-      })
+      method: 'DELETE',
+      url: `/api/wiki/delete/${$routeParams.urlName}`,
+      data: { password: pw },
+      headers: { 'Content-Type': 'application/json' }
+    })
     .then(function (response) {
-      $scope.success = "Wiki deleted!";
-      setTimeout(() => $location.path("/"), 1200);
+      $scope.success = "Wiki deleted! Redirecting to homepage...";
+      setTimeout(function() {
+        $scope.$apply(() => $location.path('/'));
+      }, 1500);
     })
     .catch(function (error) {
       $scope.error = (error.data && error.data.error) ? error.data.error : "Delete failed.";
